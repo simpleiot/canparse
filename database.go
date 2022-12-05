@@ -10,11 +10,18 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Database represents a generic CAN database with multiple CAN busses.
 type Database struct {
 	Busses []Bus
 }
 
-func ReadKcd(filePathKcd string, db *Database) error {
+// ReadKcd erases any information in the database and populates the database
+// with the information parsed from the KCD file.
+func (db *Database) ReadKcd(filePathKcd string) error {
+
+	// Make sure the database is clean
+	db.Busses = []Bus{}
+
 	kcdFile, err := os.Open(filePathKcd)
 	if err != nil {
 		return errors.Wrap(err, "Canparse, error opening file at supplied path")

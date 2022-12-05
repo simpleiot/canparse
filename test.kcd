@@ -1,15 +1,15 @@
 <NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:schemaLocation="Definition.xsd">
   <Document name="Some Document Name">some text</Document>
   <Bus name="sampledatabase">
-    <Message id="0x07B" name="HelloWorld" length="8">
+    <Message id="0x123" name="HelloWorld" length="8">
       <Notes></Notes>
       <Signal name="Hello" offset="0" length="8"/>
-      <Signal name="Wold" offset="8" length="8"/>
+      <Signal name="World" offset="8" length="8"/>
     </Message>
-    <Message id="0x75BCD15" name="Food" length="8" format="extended">
+    <Message id="0x12345678" name="Food" length="8" format="extended">
       <Notes></Notes>
-      <Signal name="State" offset="0" length="8"/>
-      <Signal name="Type" offset="8" length="8"/>
+      <Signal name="State" offset="0" length="32"/>
+      <Signal name="Type" offset="32" length="32"/>
     </Message>
   </Bus>
 </NetworkDefinition>

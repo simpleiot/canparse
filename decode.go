@@ -2,16 +2,18 @@ package canparse
 
 import (
 	"errors"
-	"log"
 
 	"go.einride.tech/can"
 )
 
+// DecodeMessage takes a CAN frame object and a CAN database object. It searches
+// the database for the CAN ID of the frame. If the ID is in the database, it returns
+// a DecodedMsg type populated with all message and signal information. If the ID is
+// not found, and empty DecodedMsg and and error are returned.
 func DecodeMessage(frame can.Frame, db *Database) (DecodedMsg, error) {
 	var message Message
 	for _, bus := range db.Busses {
 		for _, msg := range bus.Messages {
-			log.Println("canparse:", msg.Id, frame.ID)
 			if msg.Id == frame.ID {
 				message = msg
 			}
