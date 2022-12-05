@@ -4,9 +4,10 @@ import (
 	"encoding/xml"
 	"io/ioutil"
 	"os"
-	"github.com/pkg/errors"
 	"strconv"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 type Database struct {
@@ -19,7 +20,7 @@ func ReadKcd(filePathKcd string, db *Database) error {
 		return errors.Wrap(err, "Canparse, error opening file at supplied path")
 	}
 	defer kcdFile.Close()
-	
+
 	kcdData, err := ioutil.ReadAll(kcdFile)
 	if err != nil {
 		return errors.Wrap(err, "Canparse, error reading file contents")
@@ -42,10 +43,11 @@ func ReadKcd(filePathKcd string, db *Database) error {
 			// Parse the string representing a hexidecimal number to a uint64
 			hexStr := strings.Replace(m.Id, "0x", "", -1)
 			hexStr = strings.Replace(hexStr, "0X", "", -1)
-			parsedMsg.Id, err = strconv.ParseUint(hexStr, 16, 64)
+			id, err := strconv.ParseUint(hexStr, 16, 32)
 			if err != nil {
 				return errors.Wrap(err, "Canparse, error parsing hexidecimal from KCD file")
 			}
+			parsedMsg.Id = uint32(id)
 			// Copy over the signals of the message
 			for _, s := range m.KcdSignals {
 
@@ -58,7 +60,7 @@ func ReadKcd(filePathKcd string, db *Database) error {
 				parsedSig.Offset = s.KcdValue.Intercept
 				parsedSig.Unit = s.KcdValue.Unit
 				parsedMsg.Signals = append(parsedMsg.Signals, parsedSig)
-			}	
+			}
 			db.Busses[i].Messages = append(db.Busses[i].Messages, parsedMsg)
 		}
 	}
