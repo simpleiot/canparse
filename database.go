@@ -48,7 +48,6 @@ func (db *Database) Read(filePathDb string) error {
 // ReadBytes takes bytes containing data in .dbc or .kcd format and parses it. It
 // then appends the information to the generic Database.
 func (db *Database) ReadBytes(bytes []byte, filePathDb string) error {
-	log.Println(filepath.Ext(filePathDb))
 	switch filepath.Ext(filePathDb) {
 	case ".dbc":
 		err := db.ReadDbc(bytes, filePathDb)
