@@ -7,9 +7,9 @@ import (
 )
 
 // DecodeMessage takes a CAN frame object and a CAN database object. It searches
-// the database for the CAN ID of the frame. If the ID is in the database, it returns
-// a DecodedMsg type populated with all message and signal information. If the ID is
-// not found, and empty DecodedMsg and and error are returned.
+// the database for the CAN ID of the frame. If the ID is in the database, it
+// returns a DecodedMsg type populated with all message and signal information.
+// If the ID is not found, and empty DecodedMsg and and error are returned.
 func DecodeMessage(frame can.Frame, db *Database) (DecodedMsg, error) {
 	var message Message
 	for _, bus := range db.Busses {
@@ -31,7 +31,8 @@ func DecodeMessage(frame can.Frame, db *Database) (DecodedMsg, error) {
 		decoded.Signals[i].Name = sig.Name
 		decoded.Signals[i].Unit = sig.Unit
 		decoded.Signals[i].Value =
-			frame.Data.UnsignedBitsLittleEndian(uint8(sig.Start), uint8(sig.Length))
+			float64(frame.Data.UnsignedBitsLittleEndian(
+				uint8(sig.Start), uint8(sig.Length)))*sig.Scale - sig.Offset
 	}
 	return decoded, nil
 }
@@ -45,5 +46,5 @@ type DecodedMsg struct {
 type DecodedSig struct {
 	Name  string
 	Unit  string
-	Value uint64
+	Value float64
 }
